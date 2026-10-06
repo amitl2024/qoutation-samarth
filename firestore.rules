@@ -1,0 +1,21 @@
+rules_version = '2';
+
+// Samarth Security - Quotation Maker
+//
+// The app has no sign-in, so the quotation history collection is open.
+// Everything outside that one collection is denied.
+// To lock this down later: enable Firebase Anonymous Auth, call
+// FirebaseAuth.instance.signInAnonymously() at startup, and change the
+// condition below to `request.auth != null`.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /quotation_history/{docId} {
+      allow read, write: if true;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
